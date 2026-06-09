@@ -4,490 +4,710 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HELM — Personal AI Platform</title>
+  <meta name="description" content="A personal AI that runs 24/7 on your own machine. Builds the tools you wish existed, handles your routine tasks, and gets smarter over time.">
   <style>
     :root {
       --moss: #4A7C59;
       --moss-light: #5d9970;
       --moss-dark: #2d5238;
+      --moss-glow: rgba(74, 124, 89, 0.15);
       --violet: #7C3AED;
       --amber: #D97706;
-      --bg: #0f1512;
-      --bg-card: #1a2320;
-      --bg-card2: #1f2b28;
+      --bg: #0b1210;
+      --bg-card: #141e1a;
+      --bg-card2: #1a2320;
       --text: #e8ede9;
       --text-muted: #8fa897;
-      --border: #2a3d33;
+      --text-faint: #4d6457;
+      --border: #1e2e28;
+      --border-bright: #2a3d33;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 18, 16, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
       padding: 0 24px;
     }
-
-    /* Hero */
-    .hero {
-      padding: 72px 0 48px;
-      text-align: center;
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    .hero-badge {
-      display: inline-block;
-      background: rgba(74, 124, 89, 0.2);
-      border: 1px solid var(--moss);
-      color: var(--moss-light);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-size: clamp(28px, 5vw, 44px);
+    .nav-logo {
+      font-size: 16px;
       font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-decoration: none;
     }
+    .nav-logo span { color: var(--moss-light); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--moss);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--moss-light); }
 
-    .hero h1 span {
+    /* HERO */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 88px 24px 72px;
+      text-align: center;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 420px;
+      background: radial-gradient(ellipse at center, rgba(74, 124, 89, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--moss-glow);
+      border: 1px solid rgba(74, 124, 89, 0.4);
       color: var(--moss-light);
-    }
-
-    .hero-sub {
-      font-size: 17px;
-      color: var(--text-muted);
-      max-width: 480px;
-      margin: 0 auto 40px;
-    }
-
-    /* What changes */
-    .changes {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-      margin-bottom: 48px;
-      text-align: left;
-    }
-
-    .changes-label {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .change-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 10px 0;
-      font-size: 15px;
-      color: var(--text);
-    }
-
-    .change-item:not(:last-child) {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .change-arrow {
-      color: var(--moss-light);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    /* Requirements */
-    .requirements {
-      margin-bottom: 48px;
-    }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .req-list {
-      list-style: none;
-      display: grid;
-      gap: 8px;
-    }
-
-    .req-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 14px;
-    }
-
-    .req-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--moss);
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .req-name {
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .req-detail {
-      color: var(--text-muted);
-      margin-left: 4px;
-    }
-
-    /* CTA */
-    .cta-section {
-      text-align: center;
-      padding: 8px 0 64px;
-    }
-
-    .cta-heading {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .cta-sub {
-      font-size: 14px;
-      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 20px;
       margin-bottom: 28px;
     }
-
-    .btn-primary {
+    .hero h1 {
+      font-size: clamp(32px, 5.5vw, 54px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--moss-light) 30%, #7fba94);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 44px;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-hero {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       background: var(--moss);
       color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 14px 28px;
-      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 10px;
       border: none;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      text-decoration: none;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-
-    .btn-primary:hover {
+    .btn-hero:hover {
       background: var(--moss-light);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 124, 89, 0.25);
     }
+    .btn-hero:active { transform: translateY(0); }
+    .hero-hint { font-size: 13px; color: var(--text-faint); }
 
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .btn-icon {
-      font-size: 16px;
-    }
-
-    .btn-secondary {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .btn-secondary:hover {
-      color: var(--text);
-      border-color: var(--text-muted);
-    }
-
-    /* Copied state */
+    /* COPY FEEDBACK */
     .copy-feedback {
       display: none;
       align-items: center;
       gap: 8px;
-      background: rgba(74, 124, 89, 0.15);
-      border: 1px solid var(--moss);
+      background: var(--moss-glow);
+      border: 1px solid rgba(74, 124, 89, 0.4);
       color: var(--moss-light);
       font-size: 13px;
       padding: 10px 16px;
       border-radius: 8px;
-      margin-top: 12px;
-      text-align: center;
     }
+    .copy-feedback.visible { display: inline-flex; }
 
-    .copy-feedback.visible {
-      display: inline-flex;
+    /* SECTIONS */
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 24px;
     }
-
-    /* Divider */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 48px 0;
-    }
-
-    /* Tagline footer */
-    .footer-tagline {
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      padding-bottom: 40px;
-    }
-
-    .footer-tagline strong {
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* Honest notes */
-    .honest-note {
-      background: var(--bg-card2);
-      border-left: 3px solid var(--amber);
-      border-radius: 0 8px 8px 0;
-      padding: 14px 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 48px;
-    }
-
-    .honest-note strong {
-      color: var(--amber);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    /* Already set up? */
-    .skip-link {
-      display: block;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 20px;
-    }
-
-    .skip-link a {
-      color: var(--violet);
-      text-decoration: none;
-    }
-
-    .skip-link a:hover {
-      text-decoration: underline;
-    }
-
-    /* Phase 2 section */
-    .phase2-section {
-      padding: 0 0 64px;
-    }
-
-    .phase2-heading {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .phase2-sub {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 28px;
-    }
-
-    .phase2-steps {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin-bottom: 28px;
-      text-align: left;
-    }
-
-    .phase2-steps ol {
-      list-style: none;
-      counter-reset: steps;
-      display: grid;
-      gap: 10px;
-    }
-
-    .phase2-steps li {
-      counter-increment: steps;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    .phase2-steps li::before {
-      content: counter(steps);
-      background: var(--moss-dark);
-      color: var(--moss-light);
+    .section-eyebrow {
       font-size: 11px;
       font-weight: 700;
-      width: 20px;
-      height: 20px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--moss-light);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+      line-height: 1.3;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* WHAT CHANGES */
+    .changes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .change-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .change-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--moss), transparent);
+    }
+    .change-icon { font-size: 24px; margin-bottom: 12px; display: block; }
+    .change-card strong {
+      color: var(--text);
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    .change-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+
+    /* HOW IT WORKS */
+    .how-steps {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr;
+      align-items: start;
+    }
+    .how-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .how-step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--moss-glow);
+      border: 1px solid rgba(74, 124, 89, 0.4);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--moss-light);
+      margin-bottom: 14px;
+    }
+    .how-step h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .how-step p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+    .how-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-faint);
+      font-size: 18px;
+      padding-top: 28px;
     }
 
-    .phase2-steps li strong {
-      color: var(--text);
+    /* VALUE PROPS */
+    .vp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .vp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .vp-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+    .vp-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .vp-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+    /* COMPARISON */
+    .compare-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-bright);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead th {
+      background: var(--bg-card);
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-bright);
+    }
+    thead th.col-helm { color: var(--moss-light); }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 12px 16px; color: var(--text-muted); }
+    tbody td:first-child { font-weight: 600; color: var(--text); }
+    tbody td.col-helm { color: var(--text); font-weight: 500; }
+    .check { color: var(--moss-light); }
+    .partial { color: var(--amber); }
+    .cross { color: var(--text-faint); }
+
+    /* REQUIREMENTS */
+    .req-list { list-style: none; display: grid; gap: 8px; }
+    .req-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .req-num {
+      width: 24px;
+      height: 24px;
+      background: var(--moss-glow);
+      border: 1px solid rgba(74, 124, 89, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--moss-light);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .req-name { font-size: 15px; font-weight: 600; color: var(--text); display: block; margin-bottom: 2px; }
+    .req-detail { font-size: 13px; color: var(--text-muted); }
+
+    /* HONEST NOTE */
+    .honest-note {
+      background: var(--bg-card2);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 18px;
+      margin-top: 20px;
+    }
+    .honest-note strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 4px;
+    }
+    .honest-note p { font-size: 13px; color: var(--text-muted); }
+
+    /* CTA SECTION */
+    .cta-section {
+      text-align: center;
+      padding: 80px 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .cta-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .cta-sub { font-size: 16px; color: var(--text-muted); margin-bottom: 36px; }
+
+    /* PHASE 2 SKIP */
+    .skip-section {
+      border-top: 1px solid var(--border);
+      padding: 56px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .skip-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .skip-section > p { font-size: 15px; color: var(--text-muted); margin-bottom: 24px; }
+    .prompt-box {
+      background: var(--bg-card2);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 20px;
+      font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+    }
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border-bright);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .btn-copy:hover {
+      border-color: var(--moss);
+      color: var(--moss-light);
+      background: var(--moss-glow);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-tagline { font-size: 15px; color: var(--text-muted); font-style: italic; }
+    .footer-link { font-size: 12px; color: var(--text-faint); text-decoration: none; }
+    .footer-link:hover { color: var(--text-muted); }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+      .hero { padding: 56px 16px 48px; }
+      .section { padding: 48px 16px; }
+      .changes-grid, .vp-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: 1fr; }
+      .how-arrow { display: none; }
+      .skip-section { padding: 40px 16px; }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-badge">Personal AI Platform</div>
-    <h1>A personal AI that runs<br><span>24/7 on your own machine.</span></h1>
-    <p class="hero-sub">Not a subscription to a service. Yours. On your hardware. Customized exactly to how you work.</p>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">HELM<span>.</span></a>
+    <button class="nav-cta" onclick="copyAndOpen()">Get started →</button>
   </div>
+</nav>
 
-  <!-- What changes -->
-  <div class="changes">
-    <div class="changes-label">What changes after setup</div>
-    <div class="change-item">
-      <span class="change-arrow">→</span>
-      <span>You wake up to a summary of what's on your calendar, what emails need replies, and what changed overnight</span>
-    </div>
-    <div class="change-item">
-      <span class="change-arrow">→</span>
-      <span>You describe a task in plain English and get it done — not a starting point, a finished result</span>
-    </div>
-    <div class="change-item">
-      <span class="change-arrow">→</span>
-      <span>The repetitive things you do every week start happening automatically</span>
-    </div>
-  </div>
-
-  <!-- Requirements -->
-  <div class="requirements">
-    <div class="section-label">What you need</div>
-    <ul class="req-list">
-      <li class="req-item">
-        <span class="req-dot"></span>
-        <span><span class="req-name">Claude subscription</span><span class="req-detail">— the AI that powers HELM (~$20/month)</span></span>
-      </li>
-      <li class="req-item">
-        <span class="req-dot"></span>
-        <span><span class="req-name">A machine you can leave on 24/7</span><span class="req-detail">— Mac Mini works great, or any PC not in daily use</span></span>
-      </li>
-      <li class="req-item">
-        <span class="req-dot"></span>
-        <span><span class="req-name">Discord account</span><span class="req-detail">— free. Your command center for HELM.</span></span>
-      </li>
-      <li class="req-item">
-        <span class="req-dot"></span>
-        <span><span class="req-name">GitHub account</span><span class="req-detail">— free. For config backups.</span></span>
-      </li>
-      <li class="req-item">
-        <span class="req-dot"></span>
-        <span><span class="req-name">About 45–60 minutes</span></span>
-      </li>
-    </ul>
-  </div>
-
-  <div class="honest-note">
-    <strong>Don't have these things yet?</strong>
-    Don't worry — the setup guide walks you through getting everything, in order, one step at a time. You don't need to prepare anything before you start.
-  </div>
-
-  <div class="honest-note">
-    <strong>Honest tradeoff</strong>
-    Setup takes about an hour — guided, step by step. HELM gets better over time. The first week is useful. The third month is noticeably better.
-  </div>
-
-  <!-- CTA -->
-  <div class="cta-section">
-    <div class="cta-heading">Ready to get started?</div>
-    <div class="cta-sub">One click copies the setup prompt and opens Claude.ai — the AI walks you through the rest.</div>
-
-    <div>
-      <button class="btn-primary" onclick="copyAndOpen()">
-        <span class="btn-icon">📋</span>
-        Copy prompt + open Claude.ai
-      </button>
-    </div>
-
+<div class="hero">
+  <div class="hero-badge">Personal AI Platform</div>
+  <h1>A personal AI that runs<br><em>24/7 on your own machine</em></h1>
+  <p class="hero-sub">Not a subscription to someone else's system. Yours. On your hardware. Builds the tools you wish existed and gets better over time.</p>
+  <div class="hero-actions">
+    <button class="btn-hero" onclick="copyAndOpen()">
+      <span>📋</span> Copy setup prompt → open Claude.ai
+    </button>
     <div id="copy-feedback" class="copy-feedback">
-      ✓ Copied to clipboard — paste it into Claude.ai and press Enter
+      ✓ Copied — paste it into Claude.ai and press Enter
     </div>
-
-    <div class="skip-link">
-      Already have a dedicated machine set up with Claude Desktop?
-      <a href="#cowork-prompt">Skip to the install prompt →</a>
-    </div>
+    <p class="hero-hint">One paste. Claude walks you through the rest. (~60 min)</p>
   </div>
-
-  <hr class="divider">
-
-  <!-- Phase 2: Already set up section -->
-  <div id="cowork-prompt" class="phase2-section">
-    <div class="cta-heading phase2-heading">Already have your machine set up?</div>
-    <div class="cta-sub phase2-sub">If your dedicated machine is already running Claude Desktop with Cowork mode enabled, use this prompt instead — it skips the hardware setup and goes straight to installing HELM.</div>
-
-    <div class="phase2-steps">
-      <ol>
-        <li><span><strong>Open Claude Desktop</strong> on your dedicated machine (the one staying on 24/7)</span></li>
-        <li><span><strong>Make sure Cowork mode is enabled</strong> — look for it in Claude Desktop settings</span></li>
-        <li><span><strong>Copy the prompt below</strong> and paste it into the chat. Press Enter.</span></li>
-        <li><span><strong>The AI handles the rest</strong> — installing HELM, setting up Discord, and sending your first bot message</span></li>
-      </ol>
-    </div>
-
-    <div style="text-align:center;">
-      <button class="btn-primary" onclick="copyCoworkPrompt()">
-        <span class="btn-icon">📋</span>
-        Copy install prompt
-      </button>
-      <div id="copy-feedback-2" class="copy-feedback">
-        ✓ Copied — paste into Claude Desktop and press Enter
-      </div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- Footer -->
-  <div class="footer-tagline">
-    <strong>You steer the ship, we row.</strong>
-  </div>
-
 </div>
 
-<!-- Hidden prompt text for clipboard — Phase 1 (pre-install via Claude.ai) -->
+<hr class="section-divider">
+
+<div class="section">
+  <div class="section-eyebrow">After setup</div>
+  <div class="section-title">Your mornings look different</div>
+  <div class="changes-grid">
+    <div class="change-card">
+      <span class="change-icon">☀️</span>
+      <strong>Morning briefing, already done</strong>
+      <p>Before you check your phone, HELM has scanned your calendar, email, and active workspaces. One structured message — under 2 minutes.</p>
+    </div>
+    <div class="change-card">
+      <span class="change-icon">🛠</span>
+      <strong>Describe it, get it</strong>
+      <p>Tell HELM what you want in plain English. A portfolio tracker with your exact columns. A trip planner. A weekly digest. It builds the actual thing — not a template.</p>
+    </div>
+    <div class="change-card">
+      <span class="change-icon">🔁</span>
+      <strong>Repetitive things disappear</strong>
+      <p>The things you do every week on schedule start happening automatically. No reminders. No manual runs. HELM handles it.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="section">
+  <div class="section-eyebrow">How it works</div>
+  <div class="section-title">Three steps to a running system</div>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="how-step-num">1</div>
+      <h3>Set up your machine</h3>
+      <p>A Mac Mini, old laptop, or PC you can leave on 24/7. Claude walks you through the full setup — no technical experience needed.</p>
+    </div>
+    <div class="how-arrow">→</div>
+    <div class="how-step">
+      <div class="how-step-num">2</div>
+      <h3>HELM connects to Discord</h3>
+      <p>Your private Discord server becomes your command center. Talk to HELM from any device, anywhere.</p>
+    </div>
+    <div class="how-arrow">→</div>
+    <div class="how-step">
+      <div class="how-step-num">3</div>
+      <h3>Describe what you want</h3>
+      <p>In plain English. HELM builds it, schedules it, and runs it. Each tool gets its own channel. You stay in control.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="section">
+  <div class="section-eyebrow">What makes it different</div>
+  <div class="section-title">Built for someone serious about their time</div>
+  <div class="vp-grid">
+    <div class="vp-card">
+      <span class="vp-icon">🔔</span>
+      <h3>Proactive, not reactive</h3>
+      <p>HELM doesn't wait for you to ask. It surfaces what matters, flags what changed, and challenges your thinking before agreeing with you.</p>
+    </div>
+    <div class="vp-card">
+      <span class="vp-icon">🧠</span>
+      <h3>Memory that compounds</h3>
+      <p>Every note, article, and decision gets captured and made searchable by meaning. The longer you use HELM, the more it knows you.</p>
+    </div>
+    <div class="vp-card">
+      <span class="vp-icon">🔒</span>
+      <h3>Your data stays yours</h3>
+      <p>Runs on hardware you own. Credentials live in your password manager. Full audit log available anytime. Recovery is one command away.</p>
+    </div>
+    <div class="vp-card">
+      <span class="vp-icon">⚡</span>
+      <h3>Custom tools, not templates</h3>
+      <p>Most software is built for everyone. HELM builds for you — with the exact columns, alerts, and layout that match how you think.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="section">
+  <div class="section-eyebrow">How it compares</div>
+  <div class="section-title">A different kind of AI tool</div>
+  <div class="compare-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-helm">HELM</th>
+          <th>Typical AI chat</th>
+          <th>Off-the-shelf automation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Proactive (acts before you ask)</td>
+          <td class="col-helm"><span class="check">✓</span> Yes</td>
+          <td><span class="cross">✗</span> Waits for prompts</td>
+          <td><span class="partial">~</span> Schedule only</td>
+        </tr>
+        <tr>
+          <td>Builds custom tools</td>
+          <td class="col-helm"><span class="check">✓</span> Full apps</td>
+          <td><span class="cross">✗</span> No</td>
+          <td><span class="cross">✗</span> Templates only</td>
+        </tr>
+        <tr>
+          <td>Learns your workflow</td>
+          <td class="col-helm"><span class="check">✓</span> Yes</td>
+          <td><span class="cross">✗</span> No memory</td>
+          <td><span class="cross">✗</span> No</td>
+        </tr>
+        <tr>
+          <td>Your data stays on your machine</td>
+          <td class="col-helm"><span class="check">✓</span> Yes</td>
+          <td><span class="cross">✗</span> Their servers</td>
+          <td><span class="partial">~</span> Varies</td>
+        </tr>
+        <tr>
+          <td>Challenges your thinking</td>
+          <td class="col-helm"><span class="check">✓</span> By design</td>
+          <td><span class="cross">✗</span> Rarely</td>
+          <td><span class="cross">✗</span> No</td>
+        </tr>
+        <tr>
+          <td>Requires coding</td>
+          <td class="col-helm"><span class="check">✓</span> None</td>
+          <td><span class="check">✓</span> None</td>
+          <td><span class="partial">~</span> Sometimes</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="section">
+  <div class="section-eyebrow">What you need</div>
+  <div class="section-title">Five things to get started</div>
+  <ul class="req-list">
+    <li class="req-item">
+      <div class="req-num">1</div>
+      <div>
+        <span class="req-name">A Claude subscription</span>
+        <span class="req-detail">The AI that powers HELM. Pro plan (~$20/month) covers most users.</span>
+      </div>
+    </li>
+    <li class="req-item">
+      <div class="req-num">2</div>
+      <div>
+        <span class="req-name">A machine you can leave on 24/7</span>
+        <span class="req-detail">A Mac Mini works great. So does an old laptop or any PC not in daily use. Dedicated is strongly recommended — scheduled tasks never miss.</span>
+      </div>
+    </li>
+    <li class="req-item">
+      <div class="req-num">3</div>
+      <div>
+        <span class="req-name">A Discord account</span>
+        <span class="req-detail">Free. Your command center for HELM. Works from phone, desktop, or web.</span>
+      </div>
+    </li>
+    <li class="req-item">
+      <div class="req-num">4</div>
+      <div>
+        <span class="req-name">A password manager</span>
+        <span class="req-detail">HELM uses it to store credentials securely. Most major managers are supported. It never sees your personal passwords.</span>
+      </div>
+    </li>
+    <li class="req-item">
+      <div class="req-num">5</div>
+      <div>
+        <span class="req-name">About 60 minutes</span>
+        <span class="req-detail">Setup is guided step by step. You don't need to prepare anything before you start.</span>
+      </div>
+    </li>
+  </ul>
+
+  <div class="honest-note">
+    <strong>Honest tradeoffs</strong>
+    <p>Setup takes about an hour — guided the whole way. The first week is useful. The third month is noticeably better. After six months, it knows your patterns. HELM is a force multiplier, not a replacement for judgment. The decisions still belong to you.</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="cta-section">
+  <div class="cta-title">Ready to get started?</div>
+  <p class="cta-sub">One click copies the setup prompt. Paste it into Claude.ai and the AI walks you through everything — no prep needed.</p>
+  <button class="btn-hero" onclick="copyAndOpen()">
+    <span>📋</span> Copy prompt + open Claude.ai
+  </button>
+  <div id="copy-feedback-2" class="copy-feedback" style="margin-top: 12px;">
+    ✓ Copied to clipboard — paste it into Claude.ai and press Enter
+  </div>
+</div>
+
+<div id="cowork-prompt" class="skip-section">
+  <h2>Already have a dedicated machine set up?</h2>
+  <p>If you've done Part 1 (hardware + Claude Desktop installed), skip straight to the HELM install. Paste this into Claude Desktop with Cowork mode enabled.</p>
+  <div class="prompt-box" id="cowork-prompt-text">You are a HELM installer. Your job is to install HELM on this machine and create a working Discord bot so the user can control HELM from Discord.
+
+WHAT HELM IS:
+HELM is a personal AI platform that runs on this machine 24/7. It connects to Discord and lives there as a bot. The user talks to it from any device — phone, desktop, wherever. HELM can read email, calendar, and other tools, build custom automations and dashboards, and run tasks on a schedule.
+
+WHAT YOU NEED TO DO:
+1. Check that this machine can run HELM (Node.js, git, npm available or installable)
+2. Clone the HELM repository
+3. Run the HELM setup script
+4. Guide the user through creating a Discord bot and entering the token
+5. Start HELM and verify the bot comes online in Discord
+6. Send a welcome message to Discord confirming setup is complete
+
+YOUR APPROACH:
+- One step at a time. Confirm completion before moving on.
+- If anything fails, explain what happened and what to try next.
+- Never assume the user knows what a terminal command means.
+- Make sure HELM starts on login so it runs 24/7.
+
+START:
+Say: "Ready to install HELM. First — can you open a terminal window? On Mac: press Cmd+Space, type 'Terminal', and press Enter."</div>
+  <button class="btn-copy" onclick="copyCoworkPrompt()">📋 Copy install prompt</button>
+  <div id="copy-feedback-3" class="copy-feedback" style="margin-top: 8px;">
+    ✓ Copied — paste into Claude Desktop (Cowork mode)
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-tagline">You steer the ship, we row.</p>
+    <a class="footer-link" href="https://github.com/get-helm/helm">github.com/get-helm/helm</a>
+  </div>
+</footer>
+
 <textarea id="preinstall-prompt" style="position:absolute;left:-9999px;top:-9999px;opacity:0" aria-hidden="true">You are a friendly, patient setup guide helping someone install HELM on their own machine.
 
 WHAT HELM IS:
@@ -518,93 +738,51 @@ Say this exactly:
 
 First question: do you have a computer that you could leave on 24/7 — one that isn't your main daily machine? An old laptop, a Mac Mini, an old desktop — anything that could just sit on a desk and stay on."
 
-Wait for their answer, then guide them step by step through hardware check, subscription, and setup.
-</textarea>
-
-<!-- Hidden prompt text for clipboard — Phase 2 (install via Claude Desktop Cowork) -->
-<textarea id="cowork-install-prompt" style="position:absolute;left:-9999px;top:-9999px;opacity:0" aria-hidden="true">You are helping someone complete the final step of installing HELM on their machine.
-
-WHAT HELM IS:
-HELM is a personal AI assistant that runs 24/7 on this machine. It connects to Discord and lives there as a bot. The user talks to it in Discord from any device. It reads their email, calendar, and connected tools — summarizes what's happening, answers questions, runs automations on a schedule, and builds tools on request — all through Discord.
-
-WHAT YOU'RE DOING:
-Install HELM from GitHub, create the user's Discord bot, and get HELM running so their first bot message appears in Discord.
-
-GITHUB REPO: https://github.com/get-helm/helm
-
-INSTALLATION STEPS (run in order, narrate progress):
-1. Check that Homebrew, Node.js, and npm are installed; install any that are missing.
-2. Install Claude Code CLI via npm.
-3. Clone the HELM repo to ~/helm-workspace.
-4. Run npm install in ~/helm-workspace/marvin-bot.
-5. Run the HELM setup script.
-6. Configure HELM to auto-start on reboot.
-
-Never show terminal output to the user. Translate all errors into plain English.
-Narrate progress: "Installing dependencies now — about 2 minutes."
-The user should never open a terminal or type a command.
-
-YOUR APPROACH:
-- One step at a time. Wait for confirmation before the next.
-- Explain why before asking for anything.
-- Celebrate each step completion.
-- If something fails: describe what happened in plain English, suggest one thing to try, and wait.
-
-START HERE:
-Say this exactly:
-
-"Setup is running in the background — I'm installing HELM now. Takes about 2 minutes.
-
-While that runs, let me ask you the most important question in this whole setup: what would you like to call me?
-
-I'll use this name in your Discord server, in every message I send you, and when I reach out about things I've noticed. A few ideas — or type your own: Atlas, Scout, Remi, Flynn, Sage, or something completely different."
-
-Wait for their answer, then continue with name setup and Discord configuration.
-</textarea>
+Wait for their answer, then guide them step by step through hardware check, subscription, and setup.</textarea>
 
 <script>
   function copyAndOpen() {
-    const prompt = document.getElementById('preinstall-prompt').value;
-
+    const text = document.getElementById('preinstall-prompt').value;
+    const done = () => {
+      showFeedback('copy-feedback');
+      showFeedback('copy-feedback-2');
+      setTimeout(() => window.open('https://claude.ai', '_blank'), 300);
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(prompt).then(() => {
-        showFeedback('copy-feedback');
-        setTimeout(() => window.open('https://claude.ai', '_blank'), 300);
-      }).catch(() => {
-        fallbackCopy(prompt, 'preinstall-prompt', 'copy-feedback', true);
-      });
+      navigator.clipboard.writeText(text).then(done).catch(() => fallback(text, done));
     } else {
-      fallbackCopy(prompt, 'preinstall-prompt', 'copy-feedback', true);
+      fallback(text, done);
     }
   }
 
   function copyCoworkPrompt() {
-    const prompt = document.getElementById('cowork-install-prompt').value;
-
+    const text = document.getElementById('cowork-prompt-text').textContent;
+    const done = () => showFeedback('copy-feedback-3');
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(prompt).then(() => {
-        showFeedback('copy-feedback-2');
-      }).catch(() => {
-        fallbackCopy(prompt, 'cowork-install-prompt', 'copy-feedback-2', false);
-      });
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackText(text, done));
     } else {
-      fallbackCopy(prompt, 'cowork-install-prompt', 'copy-feedback-2', false);
+      fallbackText(text, done);
     }
   }
 
-  function fallbackCopy(text, elId, feedbackId, openClaude) {
-    const el = document.getElementById(elId);
-    el.style.position = 'fixed';
-    el.style.top = '0';
-    el.style.left = '0';
-    el.style.opacity = '1';
+  function fallback(text, then) {
+    const el = document.getElementById('preinstall-prompt');
+    el.style.cssText = 'position:fixed;top:0;left:0;opacity:1';
     el.select();
     document.execCommand('copy');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    el.style.opacity = '0';
-    showFeedback(feedbackId);
-    if (openClaude) setTimeout(() => window.open('https://claude.ai', '_blank'), 300);
+    el.style.cssText = 'position:absolute;left:-9999px;top:-9999px;opacity:0';
+    then();
+  }
+
+  function fallbackText(text, then) {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.cssText = 'position:fixed;top:0;left:0;opacity:1';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    then();
   }
 
   function showFeedback(id) {
