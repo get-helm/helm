@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HELM — Personal AI Platform</title>
+  <style>
+    :root {
+      --moss: #4A7C59;
+      --moss-light: #5d9970;
+      --moss-dark: #2d5238;
+      --violet: #7C3AED;
+      --amber: #D97706;
+      --bg: #0f1512;
+      --bg-card: #1a2320;
+      --bg-card2: #1f2b28;
+      --text: #e8ede9;
+      --text-muted: #8fa897;
+      --border: #2a3d33;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 48px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(74, 124, 89, 0.2);
+      border: 1px solid var(--moss);
+      color: var(--moss-light);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      color: var(--moss-light);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+
+    /* What changes */
+    .changes {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 48px;
+      text-align: left;
+    }
+
+    .changes-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .change-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .change-item:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .change-arrow {
+      color: var(--moss-light);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Requirements */
+    .requirements {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .req-list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .req-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .req-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--moss);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .req-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .req-detail {
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 8px 0 64px;
+    }
+
+    .cta-heading {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .cta-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--moss);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--moss-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-icon {
+      font-size: 16px;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+    }
+
+    /* Copied state */
+    .copy-feedback {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(74, 124, 89, 0.15);
+      border: 1px solid var(--moss);
+      color: var(--moss-light);
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .copy-feedback.visible {
+      display: inline-flex;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Tagline footer */
+    .footer-tagline {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding-bottom: 40px;
+    }
+
+    .footer-tagline strong {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Honest notes */
+    .honest-note {
+      background: var(--bg-card2);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+
+    .honest-note strong {
+      color: var(--amber);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Already set up? */
+    .skip-link {
+      display: block;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+
+    .skip-link a {
+      color: var(--violet);
+      text-decoration: none;
+    }
+
+    .skip-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">Personal AI Platform</div>
+    <h1>A personal AI that runs<br><span>24/7 on your own machine.</span></h1>
+    <p class="hero-sub">Not a subscription to a service. Yours. On your hardware. Customized exactly to how you work.</p>
+  </div>
+
+  <!-- What changes -->
+  <div class="changes">
+    <div class="changes-label">What changes after setup</div>
+    <div class="change-item">
+      <span class="change-arrow">→</span>
+      <span>You wake up to a summary of what's on your calendar, what emails need replies, and what changed overnight</span>
+    </div>
+    <div class="change-item">
+      <span class="change-arrow">→</span>
+      <span>You describe a task in plain English and get it done — not a starting point, a finished result</span>
+    </div>
+    <div class="change-item">
+      <span class="change-arrow">→</span>
+      <span>The repetitive things you do every week start happening automatically</span>
+    </div>
+  </div>
+
+  <!-- Requirements -->
+  <div class="requirements">
+    <div class="section-label">What you need</div>
+    <ul class="req-list">
+      <li class="req-item">
+        <span class="req-dot"></span>
+        <span><span class="req-name">Claude subscription</span><span class="req-detail">— the AI that powers HELM (~$20/month)</span></span>
+      </li>
+      <li class="req-item">
+        <span class="req-dot"></span>
+        <span><span class="req-name">A machine you can leave on 24/7</span><span class="req-detail">— Mac Mini works great, or any PC not in daily use</span></span>
+      </li>
+      <li class="req-item">
+        <span class="req-dot"></span>
+        <span><span class="req-name">Discord account</span><span class="req-detail">— free. Your command center for HELM.</span></span>
+      </li>
+      <li class="req-item">
+        <span class="req-dot"></span>
+        <span><span class="req-name">GitHub account</span><span class="req-detail">— free. For config backups.</span></span>
+      </li>
+      <li class="req-item">
+        <span class="req-dot"></span>
+        <span><span class="req-name">About 45–60 minutes</span></span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="honest-note">
+    <strong>Don't have these things yet?</strong>
+    Don't worry — the setup guide walks you through getting everything, in order, one step at a time. You don't need to prepare anything before you start.
+  </div>
+
+  <div class="honest-note">
+    <strong>Honest tradeoff</strong>
+    Setup takes about an hour — guided, step by step. HELM gets better over time. The first week is useful. The third month is noticeably better.
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-heading">Ready to get started?</div>
+    <div class="cta-sub">One click copies the setup prompt and opens Claude.ai — the AI walks you through the rest.</div>
+
+    <div>
+      <button class="btn-primary" onclick="copyAndOpen()">
+        <span class="btn-icon">📋</span>
+        Copy prompt + open Claude.ai
+      </button>
+    </div>
+
+    <div id="copy-feedback" class="copy-feedback">
+      ✓ Copied to clipboard — paste it into Claude.ai and press Enter
+    </div>
+
+    <div class="skip-link">
+      Already have a dedicated machine set up with Claude Desktop?
+      <a href="#cowork-prompt">Skip to the install prompt →</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Footer -->
+  <div class="footer-tagline">
+    <strong>You steer the ship, we row.</strong>
+  </div>
+
+</div>
+
+<!-- Hidden prompt text for clipboard -->
+<textarea id="preinstall-prompt" style="position:absolute;left:-9999px;top:-9999px;opacity:0" aria-hidden="true">You are a friendly, patient setup guide helping someone install HELM on their own machine.
+
+WHAT HELM IS:
+HELM is a personal AI assistant that runs on a dedicated machine (like a Mac Mini) that stays on 24/7. It connects to Discord — a free app — and lives there as a bot. The user talks to it in Discord the same way they'd message a person. HELM can read their email, calendar, and other tools, summarize what's happening, answer questions, build automations, and run tasks on a schedule — all from Discord on any device.
+
+WHAT YOU'RE GUIDING THEM THROUGH:
+The full setup has four parts. You handle parts 1 and 2, then hand off to Claude Desktop for parts 3 and 4:
+
+Part 1 — Hardware check: confirm or find the right machine.
+Part 2 — Prerequisites: Claude subscription, machine wipe if needed, Claude Desktop installed on clean machine, Cowork mode enabled.
+Part 3 — HELM installation: happens in Claude Desktop (a separate app). You give them the exact prompt to paste.
+Part 4 — Discord setup: happens automatically after Part 3.
+
+YOUR APPROACH:
+- One question or step at a time. Never show two at once.
+- Before asking for anything: explain why in one sentence, benefit-framed.
+- If they seem confused or say "I don't know," rephrase — don't repeat the same explanation.
+- If they say "I'm stuck," slow down and offer two or three concrete options.
+- Confirm completion of each step before moving to the next.
+- Celebrate every win with a brief, genuine acknowledgment — not excessive, just human.
+- Never assume they know what a "terminal," "API," "token," or "directory" is.
+- Describe exactly what they're looking for: "a gear icon that looks like ⚙️ in the top right."
+
+START HERE:
+Say this exactly:
+
+"Hi — I'm your HELM setup guide. I'll walk you through everything step by step. By the end of our conversation, your machine will be ready to install HELM, and I'll give you exactly what to do next.
+
+First question: do you have a computer that you could leave on 24/7 — one that isn't your main daily machine? An old laptop, a Mac Mini, an old desktop — anything that could just sit on a desk and stay on."
+
+Wait for their answer, then guide them step by step through hardware check, subscription, and setup.
+</textarea>
+
+<script>
+  function copyAndOpen() {
+    const prompt = document.getElementById('preinstall-prompt').value;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(prompt).then(() => {
+        showFeedback();
+        setTimeout(() => window.open('https://claude.ai', '_blank'), 300);
+      }).catch(() => {
+        fallbackCopy(prompt);
+      });
+    } else {
+      fallbackCopy(prompt);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const el = document.getElementById('preinstall-prompt');
+    el.style.position = 'fixed';
+    el.style.top = '0';
+    el.style.left = '0';
+    el.style.opacity = '1';
+    el.select();
+    document.execCommand('copy');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    el.style.opacity = '0';
+    showFeedback();
+    setTimeout(() => window.open('https://claude.ai', '_blank'), 300);
+  }
+
+  function showFeedback() {
+    const fb = document.getElementById('copy-feedback');
+    fb.classList.add('visible');
+    setTimeout(() => fb.classList.remove('visible'), 6000);
+  }
+</script>
+
+</body>
+</html>
